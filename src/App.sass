@@ -1,0 +1,106 @@
+@import 'variables'
+@import 'mixins'
+
+*
+	margin: 0
+	padding: 0
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	font-family: verdana
+	font-size: 16px
+	
+body
+	position: relative
+	background: $color-1
+	color: $color-2
+	min-height: 100%
+	margin: 40px 0
+	
+h1
+	font-size: 36px
+	
+h3
+	padding: 40px 0 20px 0
+	color: $color-3
+	
+		
+input
+	@extend %rounded
+	border: 0
+	padding: 5px
+	width: 250px
+	color: $color-3
+	
+input:focus
+	outline: none !important
+	background: $color-4
+	
+button
+	@extend %rounded
+	@extend %no-select
+	outline: none
+	border: 0
+	float: right
+	padding: 10px 40px
+	margin-top: 20px
+	background: $color-3
+	color: $color-2
+	cursor: pointer
+	&:hover
+		background: $color-5
+		
+hr 
+	border: 0
+	border-top: 1px solid $color-2
+	height: 1px
+	margin: 20px 0
+	
+.div-btn
+	width: 100%
+	
+.app
+	display: flex
+	justify-content: center
+	> div
+		@extend %rounded
+		width: 400px
+		padding: 20px
+		margin: 10px
+		min-height: 300px
+		border: 1px solid white
+		
+.bar-flex
+	display: flex
+	padding: 5px 0
+	div
+		min-height: 30px
+	div:first-child
+		width: 120px;
+	
+.error-message
+	@extend %rounded
+	background: $color-6
+	font-size: 14px
+	color: $color-2
+	padding: 10px 
+	margin: 20px 0 0 0
+
+.blue-text
+	color: $color-3
+	
+.show
+	display: block
+	
+.hide
+	display: none
+	
+/******************************************************************************/
+/* MEDIA QUERY - MAX 900
+/******************************************************************************/
+
+@media screen and (max-width: 900px) 
+	.app
+		display: block
+		> div
+			margin: 20px auto	
