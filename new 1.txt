@@ -1,0 +1,5 @@
+Lat +- 90
+Long +- 180
+
+Egyenelírő LAT 0
+

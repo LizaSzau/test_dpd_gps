@@ -5,8 +5,14 @@ import React from 'react'
 // ****************************************************************************
 
 const Result = (props) => {
-	const {cLat, cLong, dLat, dLong, perimeter, rectArea, rectCost} = props
-	
+	const cLat = props.values.cLat
+	const cLong = props.values.cLong
+	const dLat = props.values.dLat
+	const dLong = props.values.dLong
+	const perimeter = props.values.perimeter
+	const rectArea = props.values.rectArea
+	const rectCost = props.values.rectCost
+
 	let tPerimeter = perimeter
 	if (tPerimeter)  tPerimeter += ' meter'
 		

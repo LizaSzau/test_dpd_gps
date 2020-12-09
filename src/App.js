@@ -1,6 +1,7 @@
 import './App.sass'
 import React, {Component} from 'react'
 import axios from 'axios'
+import {trackPromise} from 'react-promise-tracker'
 import {config} from './config'
 import Result from './result.jsx'
 
@@ -31,38 +32,37 @@ class App extends Component {
 sendData = () => {
 	let url = config[0].apiURL + 'GPS/get_data.php'
 	var params = {
-		aLat: this.state,
-		aLong: this.state,
-		bLat: this.state,
-		bLong: this.state,
-		dataError: ''
+		aLat: this.state.aLat,
+		aLong: this.state.aLong,
+		bLat: this.state.bLat,
+		bLong: this.state.bLong,
 	}
 	
-	axios.post(url, params)
-		.then(res => {
-			if (res.data.error) {
-				this.setState({dataError: res.data.error})
+	trackPromise(
+		axios.post(url, params)
+			.then(res => {
+				if (res.data.error) {
+					this.setState({dataError: res.data.error})
+					this.showError()
+				}
+
+				if (res.data.ok) {
+					this.setState({
+						cLat: res.data.cLat,
+						cLong: res.data.cLong,
+						dLat: res.data.dLat,
+						dLong: res.data.dLong,
+						perimeter: res.data.perimeter,
+						rectArea: res.data.area,
+						rectCost: res.data.cost
+					})
+				}
+			})
+			.catch(err => { 
+				this.setState({dataError: 'Something went wrong. Please try it later.'})
 				this.showError()
 			}
-			console.log(res.data)
-			if (res.data.ok) {
-				this.setState({
-					cLat: res.data.cLat,
-					cLong: res.data.cLong,
-					dLat: res.data.dLat,
-					dLong: res.data.dLong,
-					perimeter: res.data.perimeter,
-					rectArea: res.data.area,
-					rectCost: res.data.cost
-				})
-			}
-			
-			console.log(this.state)
-		})
-		.catch(err => { 
-			this.setState({dataError: 'Something went wrong. Please try it later.'})
-			this.showError()
-		}
+		)
 	)
 }
 
@@ -90,15 +90,15 @@ handleChange_aLat(event) {
 }
 
 handleChange_aLong(event) {
-	this.setState({aLat: event.target.value})
+	this.setState({aLong: event.target.value})
 }
 
 handleChange_bLat(event) {
-	this.setState({aLat: event.target.value})
+	this.setState({bLat: event.target.value})
 }
 
 handleChange_bLong(event) {
-	this.setState({aLat: event.target.value})
+	this.setState({bLong: event.target.value})
 }
 
 // ----------------------------------------------------------------------------
@@ -106,14 +106,7 @@ handleChange_bLong(event) {
 // ----------------------------------------------------------------------------
 
 	render() {
-		
-		const {cLat} = this.state
-		const {cLong} = this.state
-		const {dLat} = this.state
-		const {dLong} = this.state
-		const {perimeter} = this.state
-		const {rectArea} = this.state
-		const {rectCost} = this.state
+		const values = this.state
 		const {dataError} = this.state
 	
 		return(
@@ -156,7 +149,8 @@ handleChange_bLong(event) {
 				</div>
 				<div>
 					<h1>Result</h1>
-					<Result cLat={cLat} cLong={cLong} dLat={dLat} dLong={dLong} perimeter={perimeter} rectArea={rectArea} rectCost={rectCost}/>
+					<Result values={values} />
+				
 				</div> 
 			</div>)
 	}
